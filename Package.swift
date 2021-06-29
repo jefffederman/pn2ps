@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "PN2PS",
+    platforms: [
+        .macOS("10.12")
+    ],
     products: [
         .executable(name: "pn2ps", targets: ["PN2PS"])
     ],
