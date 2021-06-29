@@ -12,24 +12,24 @@ struct PN2PS: ParsableCommand {
     @Argument(help: "Your name in log")
     var heroname: String
 
-    @Option(name: .shortAndLong, default: nil, help: "PokerNow Table URL to download")
+    @Option(name: .shortAndLong, help: "PokerNow Table URL to download")
     var tableUrl: String?
-    
+
     @Option(help: "PokerNow log filename")
     var filename: String?
 
-	@Option(name: .shortAndLong, default: nil, help: "Limit amount of hands processed")
+	@Option(name: .shortAndLong, help: "Limit amount of hands processed")
     private var limit: Int?
 
-    @Option(name: .shortAndLong, default: nil, help: "Multiply bet amounts by given value")
+    @Option(name: .shortAndLong, help: "Multiply bet amounts by given value")
     private var multiplier: Double?
 
-    @Option(name: .shortAndLong, default: nil, help: "Table Name")
+    @Option(name: .shortAndLong, help: "Table Name")
     private var name: String?
 
     func processCSV(_ csvFile: CSV) {
         let game = Game(rows: csvFile.namedRows)
-                
+
         if let limit = self.limit {
             for hand in game.hands.prefix(limit) {
                 hand.printPokerStarsDescription(heroName: self.heroname, multiplier: self.multiplier ?? 1.0, tableName: self.name ?? "DGen")
@@ -40,7 +40,7 @@ struct PN2PS: ParsableCommand {
             }
         }
     }
-    
+
 	func run() {
         do {
             if let filename = self.filename {
@@ -57,7 +57,7 @@ struct PN2PS: ParsableCommand {
                                 let csvFile = try CSV(string: csvText)
                                 self.processCSV(csvFile)
                                 semaphore.signal()
-                                
+
                             }
                         } catch let error {
                             print(error.localizedDescription)
@@ -69,7 +69,7 @@ struct PN2PS: ParsableCommand {
                     print("Error: No captcha token found.")
                 }
             }
-            
+
         } catch let parseError as CSVParseError {
             print(parseError)
         } catch {
